@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.sungsung.youthpolicy.mapper.PublicDataMapper">
+
+    <!-- 정책 기본정보 입력 -->
+    <insert id="insertToMaster" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO TBL_POLICY_MASTER
+        (POLICY_ID, POLICY_NAME, KEYWORD, DESCRIPTION, MAIN_CATEGORY, SUB_CATEGORY, ADDRESS_CODE, REGION, ADMIN_NAME)
+        VALUES (
+                   #{policyId},
+                   #{policyName},
+                   #{keyword},
+                   #{description},
+                   #{mainCategory},
+                   #{subCategory},
+                   #{addressCode},
+                   #{region},
+                   #{adminName}
+               )
+    </insert>
+
+    <!-- 정책 지원내용 입력 -->
+    <insert id="insertToSupport" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO TBL_POLICY_SUPPORT
+        (POLICY_ID, SUPPORT_SUMMARY, SUPPORT_METHOD_CODE, APPROVAL_STATUS_CODE, SUPPORT_LIMIT_FLAG, SUPPORT_COUNT, FIRST_COME_FLAG)
+        VALUES (
+                   #{policyId},
+                   #{supportSummary},
+                   #{supportMethodCode},
+                   #{approvalStatusCode},
+                   #{supportLimitFlag},
+                   #{supportCount},
+                   #{firstComeFlag}
+               )
+    </insert>
+
+    <!-- 정책 사업 기간 입력 -->
+    <insert id="insertToBusinessPeriod" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO TBL_POLICY_BUSINESS_PERIOD
+        (POLICY_ID, BUSINESS_PERIOD_CODE, APPLY_PERIOD_CODE, BUSINESS_START_DATE, BUSINESS_END_DATE, BUSINESS_PERIOD_TYPE)
+        VALUES (
+                   #{policyId},
+                   #{businessPeriodCode},
+                   #{applyPeriodCode},
+                   #{businessStartDate},
+                   #{businessEndDate},
+                   #{businessPeriodType}
+               )
+    </insert>
+
+    <!-- 정책 신청 정보 입력 -->
+    <insert id="insertToApplication" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO TBL_POLICY_APPLICATION
+        (POLICY_ID, APPLY_METHOD, APPLY_URL, SUBMISSION_DOCUMENTS, ETC_NOTES, REFERENCE_URL1, REFERENCE_URL2)
+        VALUES (
+                   #{policyId},
+                   #{applyMethod},
+                   #{applyUrl},
+                   #{submissionDocuments},
+                   #{etcNotes},
+                   #{referenceUrl1},
+                   #{referenceUrl2}
+               )
+    </insert>
+
+    <!-- 정책 대상 조건 입력 -->
+    <insert id="insertToEligibility" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO TBL_POLICY_ELIGIBILITY
+        (POLICY_ID, MIN_AGE, MAX_AGE, AGE_LIMIT_FLAG, MARRY_STATUS_CODE, INCOME_CONDITION_CODE, ADDITIONAL_QUALIFICATION, PARTICIPANT_TARGET_TEXT)
+        VALUES (
+                   #{policyId},
+                   #{minAge},
+                   #{maxAge},
+                   #{ageLimitFlag},
+                   #{marryStatusCode},
+                   #{incomeConditionCode},
+                   #{additionalQualification},
+                   #{participantTargetText}
+               )
+    </insert>
+
+</mapper>
