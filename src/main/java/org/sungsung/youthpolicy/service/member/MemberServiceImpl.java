@@ -21,7 +21,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean logincheck(LoginDTO loginDTO) {
+    public boolean loginCheck(LoginDTO loginDTO) {
 
         LoginDTO newLoginDTO = memberDAO.selectPwdByLoginId(loginDTO.getLoginId());
 

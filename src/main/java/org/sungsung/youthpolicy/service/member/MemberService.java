@@ -5,5 +5,5 @@ import org.sungsung.youthpolicy.domain.vo.member.MemberVO;
 
 public interface MemberService {
     public void insert(MemberVO memberVO);
-    public boolean logincheck(LoginDTO loginDTO);
+    public boolean loginCheck(LoginDTO loginDTO);
 }
