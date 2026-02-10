@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.sungsung.youthpolicy.domain.dto.member.LoginDTO;
-import org.sungsung.youthpolicy.domain.vo.MemberVO;
+import org.sungsung.youthpolicy.domain.vo.member.MemberVO;
 import org.sungsung.youthpolicy.repository.MemberDAO;
 
 @Service

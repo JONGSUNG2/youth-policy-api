@@ -2,7 +2,7 @@ package org.sungsung.youthpolicy.service.member;
 
 import jakarta.servlet.http.HttpSession;
 import org.sungsung.youthpolicy.domain.dto.member.LoginDTO;
-import org.sungsung.youthpolicy.domain.vo.MemberVO;
+import org.sungsung.youthpolicy.domain.vo.member.MemberVO;
 
 public interface MemberService {
     void insert(MemberVO memberVO);
