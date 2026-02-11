@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.sungsung.youthpolicy.service.member.MemberService;
 import org.sungsung.youthpolicy.service.policy.PolicyService;
 
 
@@ -20,7 +19,6 @@ import org.sungsung.youthpolicy.service.policy.PolicyService;
 public class PolicyController {
 
     private final PolicyService policyService;
-    private final MemberService memberService;
     @GetMapping("/detail/{policyId}")
     public String policyDetailPage(@PathVariable("policyId")String policyId, Model model){
 
