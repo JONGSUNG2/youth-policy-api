@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.sungsung.youthpolicy.domain.vo.member.MemberVO;
 import org.sungsung.youthpolicy.repository.MemberDAO;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -21,4 +23,14 @@ public class MemberServiceImpl implements MemberService {
         memberDAO.insert(memberVO);
     }
 
+
+
+
+
+    @Override
+    public Optional<MemberVO> findMemberById(Long id) {
+        return memberDAO.selectMemberByLoginId(id);
+    }
+
 }
+
