@@ -1,9 +1,12 @@
 package org.sungsung.youthpolicy.service.member;
 
-import org.sungsung.youthpolicy.domain.dto.member.LoginDTO;
-import org.sungsung.youthpolicy.domain.vo.MemberVO;
+import org.sungsung.youthpolicy.domain.dto.member.MemberDetailDTO;
+import org.sungsung.youthpolicy.domain.vo.member.MemberVO;
+
 
 public interface MemberService {
-    public void insert(MemberVO memberVO);
-    public boolean logincheck(LoginDTO loginDTO);
+    void insert(MemberVO memberVO);
+
+    MemberDetailDTO findMemberByLoginId(String id);
+
 }

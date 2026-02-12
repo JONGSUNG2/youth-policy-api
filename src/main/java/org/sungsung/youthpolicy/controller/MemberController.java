@@ -1,21 +1,24 @@
 package org.sungsung.youthpolicy.controller;
 
-import jakarta.servlet.http.HttpSession;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.sungsung.youthpolicy.domain.dto.member.LoginDTO;
-import org.sungsung.youthpolicy.domain.vo.MemberVO;
+import org.sungsung.youthpolicy.domain.dto.member.MemberDetailDTO;
+import org.sungsung.youthpolicy.domain.vo.member.MemberVO;
 import org.sungsung.youthpolicy.service.member.MemberService;
+
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/member/*")
 @Slf4j
 public class MemberController {
     private final MemberService memberService;
@@ -30,10 +33,9 @@ public class MemberController {
     public String join(@ModelAttribute MemberVO memberVO, Model model){
 
         memberService.insert(memberVO);
-
         model.addAttribute("member", memberVO);
 
-        return "redirect:member/login";
+        return "redirect:/member/login";
     }
 
     @GetMapping("/login")
@@ -41,14 +43,15 @@ public class MemberController {
         return "member/login";
     }
 
-    @PostMapping("/login")
-    public String login(@ModelAttribute LoginDTO loginDTO, HttpSession session){
 
-        if(memberService.logincheck(loginDTO)){
-            session.setAttribute("id", loginDTO.getId());
-            log.info("id{}",session.getAttribute("id") );
-            return "redirect:/";
+    @GetMapping("/detail")
+    public String member(Principal principal, Model model){
+        if(principal == null){
+            return "redirect:/member/login";
         }
-        return  "member/login";
+        MemberDetailDTO member = memberService.findMemberByLoginId(principal.getName());
+        model.addAttribute("member", member);
+        return "member/detail";
     }
+
 }
