@@ -1,6 +1,7 @@
 package org.sungsung.youthpolicy.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.sungsung.youthpolicy.domain.dto.policy.PolicyCondition;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyDetailDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListRequestDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListResponseDTO;
@@ -17,9 +18,9 @@ public interface PolicyMapper {
     public void insertToEligibility(PolicyEligibilityVO policyEligibilityVO);
 
 //    정책 목록
-    public List<PolicyListResponseDTO> selectPolicyList(PolicyListRequestDTO policyListRequestDTO);
+    public List<PolicyListResponseDTO> selectPolicyList(PolicyListRequestDTO policyListRequestDTO, PolicyCondition policyCondition);
 //    정책 상세
     public PolicyDetailDTO selectPolicyDetailById(String policyId);
 //    정책 개수
-    public Integer selectPolicyCount();
+    public Integer selectPolicyCount(PolicyCondition policyCondition);
 }
