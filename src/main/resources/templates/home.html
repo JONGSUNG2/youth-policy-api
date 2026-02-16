@@ -38,6 +38,7 @@
             gap: 25px;
         }
 
+
         nav ul li a {
             color: #ffffff;
             text-decoration: none;
@@ -182,19 +183,17 @@
 
         <nav>
             <ul>
-                <div sec:authorize="isAuthenticated()">
-                    <li ><a href="/">AI 맞춤혜택 서비스</a></li>
-                    <li ><a th:href="@{/member/detail}">마이페이지</a></li>
-                    <li ><a th:href="@{/member/logout}">로그아웃</a></li>
-                </div>
+                <!-- 로그인 상태 -->
+                <li sec:authorize="isAuthenticated()"><a href="/">AI 맞춤혜택 서비스</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/member/detail}">마이페이지</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/member/logout}">로그아웃</a></li>
 
-                <div sec:authorize="!isAuthenticated()">
-                    <li ><a th:href="@{/member/login}">로그인</a></li>
-                    <li ><a th:href="@{/member/join}">회원가입</a></li>
-                </div>
-
+                <!-- 로그아웃 상태 -->
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/member/login}">로그인</a></li>
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/member/join}">회원가입</a></li>
             </ul>
         </nav>
+
     </div>
 </header>
 
