@@ -14,14 +14,44 @@
             line-height: 1.55;
         }
 
+        /* ------ Header / Navigation ------ */
         header {
-            background-color: #2563eb;
-            padding: 18px 24px;
-            color: white;
-            font-size: 20px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
+            background-color: #2d68ff;
+            padding: 15px 20px;
+            color: #fff;
         }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px;
+        }
+
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
 
         .main {
             max-width: 900px;
@@ -90,14 +120,29 @@
             text-decoration: underline;
         }
     </style>
-</head>
 
 <body>
 
 <header>
-    <h2>정책지원 서비스</h2>
-</header>
+    <div class="nav-container">
+        <div class="logo">정책지원 서비스</div>
 
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">정책 목록</a></li>
+                <!-- 로그인 상태 -->
+                <li sec:authorize="isAuthenticated()"><a href="/">AI 맞춤혜택 서비스</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/member/detail}">마이페이지</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/member/logout}">로그아웃</a></li>
+
+                <!-- 로그아웃 상태 -->
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/member/login}">로그인</a></li>
+                <li sec:authorize="!isAuthenticated()"><a th:href="@{/member/join}">회원가입</a></li>
+            </ul>
+        </nav>
+
+    </div>
+</header>
 <div class="main">
 
     <!-- 제목 박스 -->
