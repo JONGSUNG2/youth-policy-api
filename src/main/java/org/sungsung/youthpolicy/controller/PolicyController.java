@@ -21,7 +21,6 @@ public class PolicyController {
     private final PolicyService policyService;
     @GetMapping("/detail/{policyId}")
     public String policyDetailPage(@PathVariable("policyId")String policyId, Model model){
-
         model.addAttribute("policy", policyService.policyDetail(policyId));
         return "policy/policyDetail";
     }
