@@ -13,6 +13,30 @@
     </select>
 
     <select id="selectMemberByLoginId">
-        SELECT LOGIN_ID, NAME, EMAIL FROM TBL_MEMBER WHERE LOGIN_ID=#{id}
+        SELECT LOGIN_ID, NAME, EMAIL FROM TBL_MEMBER WHERE LOGIN_ID=#{loginId}
     </select>
+
+    <select id="selectIdByLoginId">
+        SELECT ID FROM TBL_MEMBER WHERE LOGIN_ID=#{loginId}
+    </select>
+
+
+
+
+
+    <!--TBL_MEMBER_PLUS-->
+    <select id="selectMemberPlusDTOByMemberId">
+        SELECT TM.NAME, TMP.AGE, TMP.REGION, TMP.MARRIAGE, TMP.MAIN_CATEGORY
+        FROM TBL_MEMBER AS TM
+        LEFT JOIN TBL_MEMBER_PLUS AS TMP ON TM.ID = TMP.MEMBER_ID
+        WHERE TM.LOGIN_ID = #{loginId}
+
+    </select>
+
+
+    <insert id="insertMemberPlus" useGeneratedKeys="true" keyProperty="id">
+        insert into TBL_MEMBER_PLUS (MEMBER_ID, AGE, REGION, MARRIAGE, MAIN_CATEGORY)
+        VALUES ( #{memberId}, #{age}, #{region}, #{marriage}, #{mainCategory} )
+    </insert>
+
 </mapper>
