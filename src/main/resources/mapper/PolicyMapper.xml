@@ -80,33 +80,25 @@
     </insert>
 
     <!--    정책 목록 가져오기-->
-    <select id="selectPolicyList">
-        SELECT POLICY_ID,POLICY_NAME,DESCRIPTION FROM TBL_POLICY_MASTER
-             WHERE 1=1
-             <if test="policyCondition.addressCode != null and policyCondition.addressCode != ''">
-                 AND ADDRESS_CODE LIKE CONCAT(
-                 #{policyCondition.addressCode},
-                 '%'
-                 )
-             </if>
+    <select id="selectPolicyList" parameterType="org.sungsung.youthpolicy.domain.dto.policy.PolicyListRequestDTO">
+        SELECT POLICY_ID, POLICY_NAME, DESCRIPTION
+        FROM TBL_POLICY_MASTER
+        WHERE 1=1
 
+        <if test="addressCode != null and addressCode != ''">
+            AND ADDRESS_CODE LIKE CONCAT(#{addressCode}, '%')
+        </if>
 
-            <if test="policyCondition.mainCategory != null and policyCondition.mainCategory != ''">
-                AND MAIN_CATEGORY LIKE CONCAT('%', #{policyCondition.mainCategory}, '%')
-            </if>
+        <if test="mainCategory != null and mainCategory != ''">
+            AND MAIN_CATEGORY LIKE CONCAT('%', #{mainCategory}, '%')
+        </if>
 
-            <if test="policyCondition.policyName != null and policyCondition.policyName != ''">
-                ANd POLICY_NAME LIKE CONCAT('%', #{policyCondition.policyName}, '%')
-            </if>
+        <if test="policyName != null and policyName != ''">
+            AND POLICY_NAME LIKE CONCAT('%', #{policyName}, '%')
+        </if>
 
-             LIMIT #{policyListRequestDTO.pageSize} OFFSET #{policyListRequestDTO.startRow};
+        LIMIT #{pageSize} OFFSET #{startRow}
     </select>
-    <!--    정책 상세 가져오기-->
-<!--    <select id="selectPolicyDetailById">-->
-<!--        SELECT POLICY_NAME,MAIN_CATEGORY,SUB_CATEGORY,REGION,DESCRIPTION,KEYWORD,ADMIN_NAME,APPLY_METHOD-->
-<!--        FROM TBL_POLICY_MASTER TPM INNER JOIN TBL_POLICY_APPLICATION TPA-->
-<!--                                              ON TPA.POLICY_ID = TPM.POLICY_ID WHERE TPM.POLICY_ID = #{policyId}-->
-<!--    </select>-->
 
     <select id="selectPolicyDetailById">
         SELECT TPM.POLICY_NAME, TPM.KEYWORD, TPM.DESCRIPTION, TPM.MAIN_CATEGORY, TPM.SUB_CATEGORY,TPM.REGION, TPM.ADMIN_NAME,

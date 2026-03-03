@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>AI 정책 추천 - 조건 입력</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; padding: 20px; }
+        .container { max-width: 480px; margin: auto; background: #fff; padding: 24px; border-radius: 10px; box-shadow: 0 0 8px #ddd; }
+        h2 { text-align: center; }
+        label { font-weight: bold; margin-top: 12px; display: block; }
+        input, select { width: 100%; padding: 8px; margin-top: 6px; border: 1px solid #ccc; border-radius: 5px; }
+        button { width: 100%; padding: 12px; margin-top: 20px; background: #3478f6; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #2e6ada; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>AI 정책 추천 받기</h2>
+
+    <form th:action="@{/policy/recommend}" method="post">
+
+        <label>나이</label>
+        <input type="number" name="age" min="1" required>
+
+        <label>거주 지역</label>
+        <select name="region" th:field="${regions}" required>
+            <option value="">전체 지역</option>
+            <option th:each="r:${regions}" th:value="${r.code}" th:text="${r.name}"></option>
+        </select>
+        <label>전체 분야</label>
+        <select name="region" th:field="${mainCategories}" required>
+            <option value="">선택하세요</option>
+            <option th:each="c:${mainCategories}" th:value="${c.name}" th:text="${c.name}">선택하세요</option>
+        </select>
+
+        <label>취업 상태</label>
+        <select name="employment" required>
+            <option value="student">학생</option>
+            <option value="jobseeker">구직자</option>
+            <option value="employee">근로자</option>
+        </select>
+
+        <label>장애 여부</label>
+        <select name="disability" required>
+            <option value="false">없음</option>
+            <option value="true">있음</option>
+        </select>
+
+        <button type="submit">AI 추천 받기</button>
+    </form>
+</div>
+
+</body>
+</html>

@@ -239,15 +239,15 @@
     <!-- 검색박스 -->
     <form class="search-box" method="get" th:action="@{/policy/policyList}">
         <input type="text" name="policyName"
-               th:field="${policyCondition.policyName}"
+               th:field="${policyListRequestDTO.policyName}"
                placeholder="검색할 정책명을 입력하세요">
 
-        <select th:field="${policyCondition.mainCategory}">
+        <select th:field="${policyListRequestDTO.mainCategory}">
             <option value="">전체 분야</option>
             <option th:each="c : ${mainCategories}" th:value="${c.name}" th:text="${c.name}"></option>
         </select>
 
-        <select th:field="${policyCondition.addressCode}">
+        <select th:field="${policyListRequestDTO.addressCode}">
             <option value="">전체 지역</option>
             <option th:each="r : ${regions}" th:value="${r.code}" th:text="${r.name}"></option>
         </select>

@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.sungsung.youthpolicy.domain.dto.policy.PolicyCondition;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListRequestDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListResponseDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.config.MainCategory;
@@ -31,16 +30,19 @@ public class PolicyController {
         return "policy/policyDetail";
     }
     @GetMapping("policyList")
-    public String policyListPage(Model model, PolicyListRequestDTO policyListRequestDTO, PolicyCondition policyCondition){
+    public String policyListPage(Model model, PolicyListRequestDTO policyListRequestDTO){
 
-        List<PolicyListResponseDTO> policyList = policyService.policyList(policyListRequestDTO, policyCondition);
-        model.addAttribute("policyCondition", policyCondition);
+        List<PolicyListResponseDTO> policyList = policyService.policyList(policyListRequestDTO);
         model.addAttribute("regions", Region.values());
         model.addAttribute("mainCategories", MainCategory.values());
 
         model.addAttribute("policyList",policyList);
         model.addAttribute("policyListRequestDTO", policyListRequestDTO);
-        model.addAttribute("policyCondition", policyCondition);
         return "policy/policyList";
+    }
+    @GetMapping("/policy/condition")
+    public String policyConditionPage(Model model){
+        model.addAttribute("regions", Region.values());
+        return "policy/policyCondition";
     }
 }
