@@ -18,34 +18,34 @@
 <div class="container">
     <h2>AI 정책 추천 받기</h2>
 
-    <form th:action="@{/policy/recommend}" method="post">
+    <form th:action="@{/policy/recommend/process}" method="get" th:object="${policyRecommendRequestDTO}">
 
         <label>나이</label>
         <input type="number" name="age" min="1" required>
 
         <label>거주 지역</label>
-        <select name="region" th:field="${regions}" required>
+        <select name="region" th:field="*{region}" required>
             <option value="">전체 지역</option>
             <option th:each="r:${regions}" th:value="${r.code}" th:text="${r.name}"></option>
         </select>
         <label>전체 분야</label>
-        <select name="region" th:field="${mainCategories}" required>
+        <select name="region" th:field="*{mainCategory}" required>
             <option value="">선택하세요</option>
             <option th:each="c:${mainCategories}" th:value="${c.name}" th:text="${c.name}">선택하세요</option>
         </select>
 
-        <label>취업 상태</label>
-        <select name="employment" required>
-            <option value="student">학생</option>
-            <option value="jobseeker">구직자</option>
-            <option value="employee">근로자</option>
-        </select>
+<!--        <label>취업 상태</label>-->
+<!--        <select name="employment" required>-->
+<!--            <option value="student">학생</option>-->
+<!--            <option value="jobseeker">구직자</option>-->
+<!--            <option value="employee">근로자</option>-->
+<!--        </select>-->
 
-        <label>장애 여부</label>
-        <select name="disability" required>
-            <option value="false">없음</option>
-            <option value="true">있음</option>
-        </select>
+<!--        <label>장애 여부</label>-->
+<!--        <select name="disability" required>-->
+<!--            <option value="false">없음</option>-->
+<!--            <option value="true">있음</option>-->
+<!--        </select>-->
 
         <button type="submit">AI 추천 받기</button>
     </form>
