@@ -1,4 +1,4 @@
-package org.sungsung.youthpolicy.controller;
+package org.sungsung.youthpolicy.controller.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.sungsung.youthpolicy.domain.dto.policy.publicData.PolicyDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.publicData.RootDTO;
-import org.sungsung.youthpolicy.service.publicData.PublicDataService;
+import org.sungsung.youthpolicy.service.api.publicData.PublicDataService;
 
 import java.util.List;
 

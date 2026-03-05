@@ -1,4 +1,4 @@
-package org.sungsung.youthpolicy.service.publicData;
+package org.sungsung.youthpolicy.service.api.publicData;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

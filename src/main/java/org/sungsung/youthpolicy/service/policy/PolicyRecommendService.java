@@ -1,10 +1,12 @@
 package org.sungsung.youthpolicy.service.policy;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.sungsung.youthpolicy.domain.dto.policy.publicData.PolicyDTO;
 import org.sungsung.youthpolicy.domain.vo.policy.PolicyConditionVO;
+import org.sungsung.youthpolicy.service.api.ai.OpenAiService;
 
 import java.util.List;
 
@@ -14,8 +16,7 @@ import java.util.List;
 public class PolicyRecommendService {
 
     private final PolicyService policyService;
-//    private final AiService aiService;
-//    private final RecommendPolicyRepository recommendRepository;
+    private final OpenAiService openAiService;
 
     public void processRecommendation(String hash) {
 
@@ -27,10 +28,10 @@ public class PolicyRecommendService {
 
         // 3. VIEW에서 정책 상세 리스트 한번에 조회
         List<PolicyDTO> policyList = policyService.findFilteringPolicyList(policyIds);
-        log.info(policyList.toString());
 
         // 4. GPT 프롬프트 생성 및 호출
-//        List<RecommendResultDTO> aiResults = aiService.requestRecommendation(policyList, cond);
+       String aiResultJson = openAiService.recommendPolicyToAi(policyList);
+       log.info(aiResultJson);
 
         // 5. DB에 추천 결과 저장
 //        recommendRepository.saveRecommendList(cond.getLoginId(), hash, aiResults);
