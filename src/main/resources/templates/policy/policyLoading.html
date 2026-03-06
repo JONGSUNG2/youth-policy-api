@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>AI 정책 분석</title>
+
+    <style>
+
+        body{
+            margin:0;
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#4facfe,#00f2fe);
+            font-family:Arial;
+        }
+
+        #loadingBox{
+            background:white;
+            padding:60px 80px;
+            border-radius:15px;
+            text-align:center;
+            box-shadow:0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .spinner{
+            width:60px;
+            height:60px;
+            border:6px solid #eee;
+            border-top:6px solid #4facfe;
+            border-radius:50%;
+            animation:spin 1s linear infinite;
+            margin:0 auto 30px;
+        }
+
+        @keyframes spin{
+            0%{transform:rotate(0deg)}
+            100%{transform:rotate(360deg)}
+        }
+
+        h2{
+            margin:0;
+            font-size:22px;
+        }
+
+        p{
+            color:#666;
+            margin-top:10px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div id="loadingBox">
+
+    <div class="spinner"></div>
+
+    <h2>AI가 정책을 분석중입니다</h2>
+    <p>잠시만 기다려 주세요...</p>
+
+</div>
+
+
+<script>
+
+    const hash = "[[${hash}]]";
+
+    async function runAi() {
+
+        const response = await fetch(`/policy/recommendAi?hash=${hash}`);
+
+        if(response.ok){
+            window.location.href = `/policy/policyRecommendList?hash=${hash}`;
+        }
+    }
+
+    runAi();
+
+</script>
+
+</body>
+</html>

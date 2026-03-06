@@ -7,6 +7,7 @@ import org.sungsung.youthpolicy.converter.PolicyDataConverter;
 import org.sungsung.youthpolicy.domain.dto.member.MemberPlusDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyCondition;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListRequestDTO;
+import org.sungsung.youthpolicy.domain.dto.policy.PolicyRecommendListDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.publicData.PolicyDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyDetailDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListResponseDTO;
@@ -44,13 +45,13 @@ public class PolicyServiceImpl implements PolicyService {
     }
 
     @Override
-    public List<PolicyListResponseDTO> policyList(PolicyListRequestDTO policyListRequestDTO, PolicyCondition policyCondition) {
+    public List<PolicyListResponseDTO> policyList(PolicyListRequestDTO policyListRequestDTO) {
 
         if (policyListRequestDTO.getCurrentPage()==null){
             policyListRequestDTO.setCurrentPage(1);
         }
 
-        Integer policyCount = policyDAO.selectPolicyCount(policyCondition);
+        Integer policyCount = policyDAO.selectPolicyCount(policyListRequestDTO);
         policyListRequestDTO.setTotalPage((policyCount==0)?1:(int)Math.ceil((double)policyCount/PAGE_SIZE));
 
 
@@ -61,7 +62,7 @@ public class PolicyServiceImpl implements PolicyService {
 
         policyListRequestDTO.setPageSize(PAGE_SIZE);
         policyListRequestDTO.setStartRow((policyListRequestDTO.getCurrentPage()-1)*PAGE_SIZE);
-        return policyDAO.selectAllPolicy(policyListRequestDTO, policyCondition);
+        return policyDAO.selectAllPolicy(policyListRequestDTO);
     }
 
     @Override
