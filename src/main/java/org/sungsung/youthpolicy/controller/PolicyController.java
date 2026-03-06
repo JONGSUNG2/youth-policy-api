@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListRequestDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListResponseDTO;
+import org.sungsung.youthpolicy.domain.dto.policy.PolicyRecommendListDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.config.MainCategory;
 import org.sungsung.youthpolicy.domain.dto.policy.config.Region;
 import org.sungsung.youthpolicy.domain.vo.policy.PolicyConditionVO;
@@ -91,14 +92,20 @@ public class PolicyController {
 //     *  AI 추천 실행 (비동기)
     @GetMapping("/recommendAi")
     @ResponseBody
-    public ResponseEntity<?> policyRecommendAi(@RequestParam String hash) {
-        policyRecommendService.processRecommendation(hash);
+    public ResponseEntity<?> policyRecommendAi(@RequestParam String hash,Principal principal) {
+
+        if (principal == null) {
+            return ResponseEntity.notFound().build();
+        }
+        policyRecommendService.processRecommendation(hash,principal.getName());
         return ResponseEntity.ok().build();
     }
 
 //     *  추천 정책 목록 페이지
     @GetMapping("/policyRecommendList")
-    public String policyRecommendListPage(Model model) {
+    public String policyRecommendListPage(@RequestParam String hash,Model model) {
+        List<PolicyRecommendListDTO> recommendList = policyService.findRecommendPolicyList(hash);
+        model.addAttribute("recommendList", recommendList);
         return "policy/policyRecommendList";
     }
 

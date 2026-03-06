@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyDetailDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListRequestDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListResponseDTO;
-import org.sungsung.youthpolicy.domain.dto.policy.PolicyRecommendRequestDTO;
+import org.sungsung.youthpolicy.domain.dto.policy.PolicyRecommendListDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.publicData.PolicyDTO;
 import org.sungsung.youthpolicy.domain.vo.policy.*;
 import org.sungsung.youthpolicy.mapper.PolicyMapper;
@@ -51,7 +51,7 @@ public class PolicyDAO {
     }
 //    정책 조건 중복체크
     public PolicyConditionVO selectPolicyRecommendByHsh(String hash){
-        return policyMapper.selectPolicyRecommendByHash(hash);
+        return policyMapper.selectPolicyConditionByHash(hash);
     }
 //    정책 필터링 목록
     public List<String> selectFilterPolicyId(PolicyConditionVO policyConditionVO){
@@ -61,4 +61,13 @@ public class PolicyDAO {
     public List<PolicyDTO> selectPolicyListByFilteringId(List<String> policyIds){
         return policyMapper.selectPolicyListByFilteringId(policyIds);
     }
+//    AI 추천 정책 삽입
+    public void insertRecommendPolicy(PolicyRecommendVO policyRecommendVO){
+        policyMapper.insertRecommendPolicy(policyRecommendVO);
+    }
+//    AI 추천 정책 목록 조회
+    public List<PolicyRecommendListDTO> selectRecommendPolicyList(String hash){
+        return policyMapper.selectRecommendPolicyList(hash);
+    }
+
 }

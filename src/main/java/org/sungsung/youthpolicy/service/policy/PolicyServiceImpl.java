@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.sungsung.youthpolicy.converter.PolicyDataConverter;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListRequestDTO;
-import org.sungsung.youthpolicy.domain.dto.policy.PolicyRecommendRequestDTO;
+import org.sungsung.youthpolicy.domain.dto.policy.PolicyRecommendListDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.publicData.PolicyDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyDetailDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListResponseDTO;
@@ -85,6 +85,16 @@ public class PolicyServiceImpl implements PolicyService {
     @Override
     public List<PolicyDTO> findFilteringPolicyList(List<String> policyIds) {
         return policyDAO.selectPolicyListByFilteringId(policyIds);
+    }
+
+    @Override
+    public void writeRecommendPolicy(PolicyRecommendVO policyRecommendVO) {
+        policyDAO.insertRecommendPolicy(policyRecommendVO);
+    }
+
+    @Override
+    public List<PolicyRecommendListDTO> findRecommendPolicyList(String hash) {
+        return policyDAO.selectRecommendPolicyList(hash);
     }
 
 
