@@ -3,18 +3,35 @@ package org.sungsung.youthpolicy.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+<<<<<<< feature/Ai-recommand
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+=======
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.sungsung.youthpolicy.domain.dto.policy.PolicyCondition;
+>>>>>>> develop
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListRequestDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListResponseDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyRecommendListDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.config.MainCategory;
 import org.sungsung.youthpolicy.domain.dto.policy.config.Region;
+<<<<<<< feature/Ai-recommand
 import org.sungsung.youthpolicy.domain.vo.policy.PolicyConditionVO;
 import org.sungsung.youthpolicy.service.policy.PolicyRecommendService;
+=======
+import org.sungsung.youthpolicy.service.member.CustomUserDetailsService;
+import org.sungsung.youthpolicy.service.member.MemberService;
+>>>>>>> develop
 import org.sungsung.youthpolicy.service.policy.PolicyService;
 
 import java.nio.charset.StandardCharsets;
@@ -29,9 +46,13 @@ import java.util.List;
 public class PolicyController {
 
     private final PolicyService policyService;
+<<<<<<< feature/Ai-recommand
     private final PolicyRecommendService policyRecommendService;
 
 //     *  정책 상세 페이지
+=======
+    private final MemberService memberService;
+>>>>>>> develop
     @GetMapping("/detail/{policyId}")
     public String policyDetailPage(@PathVariable("policyId") String policyId, Model model) {
         model.addAttribute("policy", policyService.policyDetail(policyId));
@@ -51,6 +72,7 @@ public class PolicyController {
         return "policy/policyList";
     }
 
+<<<<<<< feature/Ai-recommand
 //     *  정책 추천 조건 입력 페이지
     @GetMapping("/condition")
     public String policyConditionPage(Model model, PolicyConditionVO policyConditionVO) {
@@ -127,4 +149,19 @@ public class PolicyController {
             throw new RuntimeException(e);
         }
     }
+=======
+    @GetMapping("recommend")
+    public String policyRecommendPage(Model model, Authentication user, RedirectAttributes redirectAttributes){
+
+        if(memberService.checkMemberPlus(user.getName()).getAge()==null){
+            redirectAttributes.addAttribute("name", memberService.checkMemberPlus(user.getName()).getName());
+            return "redirect:/member/memberPlus";
+        }
+
+        log.info("---------USER  {}", user.getName() );
+        return "policy/recommendedList";
+    }
+
+
+>>>>>>> develop
 }
