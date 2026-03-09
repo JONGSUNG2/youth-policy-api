@@ -70,9 +70,8 @@ public class PolicyController {
 
         String hash = makeHash(policyConditionVO);
 
-        // 이미 같은 조건으로 저장된 결과가 있다면 바로 추천페이지 이동
         if (policyService.findRecommendPolicyByHash(hash) != null) {
-            return "redirect:/policy/policyRecommendList";
+            return "redirect:/policy/policyRecommendList?hash=" + hash;
         }
 
         policyConditionVO.setLoginId(principal.getName());
