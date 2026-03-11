@@ -3,35 +3,18 @@ package org.sungsung.youthpolicy.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-<<<<<<< feature/Ai-recommand
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-=======
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.sungsung.youthpolicy.domain.dto.policy.PolicyCondition;
->>>>>>> develop
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListRequestDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListResponseDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyRecommendListDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.config.MainCategory;
 import org.sungsung.youthpolicy.domain.dto.policy.config.Region;
-<<<<<<< feature/Ai-recommand
 import org.sungsung.youthpolicy.domain.vo.policy.PolicyConditionVO;
 import org.sungsung.youthpolicy.service.policy.PolicyRecommendService;
-=======
-import org.sungsung.youthpolicy.service.member.CustomUserDetailsService;
-import org.sungsung.youthpolicy.service.member.MemberService;
->>>>>>> develop
 import org.sungsung.youthpolicy.service.policy.PolicyService;
 
 import java.nio.charset.StandardCharsets;
@@ -46,20 +29,16 @@ import java.util.List;
 public class PolicyController {
 
     private final PolicyService policyService;
-<<<<<<< feature/Ai-recommand
     private final PolicyRecommendService policyRecommendService;
 
-//     *  정책 상세 페이지
-=======
-    private final MemberService memberService;
->>>>>>> develop
+    //     *  정책 상세 페이지
     @GetMapping("/detail/{policyId}")
     public String policyDetailPage(@PathVariable("policyId") String policyId, Model model) {
         model.addAttribute("policy", policyService.policyDetail(policyId));
         return "policy/policyDetail";
     }
 
-//     *  정책 목록 페이지
+    //     *  정책 목록 페이지
     @GetMapping("/policyList")
     public String policyListPage(Model model, PolicyListRequestDTO policyListRequestDTO) {
         List<PolicyListResponseDTO> policyList = policyService.policyList(policyListRequestDTO);
@@ -72,8 +51,7 @@ public class PolicyController {
         return "policy/policyList";
     }
 
-<<<<<<< feature/Ai-recommand
-//     *  정책 추천 조건 입력 페이지
+    //     *  정책 추천 조건 입력 페이지
     @GetMapping("/condition")
     public String policyConditionPage(Model model, PolicyConditionVO policyConditionVO) {
         model.addAttribute("regions", Region.values());
@@ -83,7 +61,7 @@ public class PolicyController {
         return "policy/policyCondition";
     }
 
-//     *  추천 조건 제출
+    //     *  추천 조건 제출
     @PostMapping("/condition")
     public String policyRecommendProcess(PolicyConditionVO policyConditionVO, Principal principal) {
         if (principal == null) {
@@ -92,9 +70,8 @@ public class PolicyController {
 
         String hash = makeHash(policyConditionVO);
 
-        // 이미 같은 조건으로 저장된 결과가 있다면 바로 추천페이지 이동
         if (policyService.findRecommendPolicyByHash(hash) != null) {
-            return "redirect:/policy/policyRecommendList";
+            return "redirect:/policy/policyRecommendList?hash=" + hash;
         }
 
         policyConditionVO.setLoginId(principal.getName());
@@ -104,14 +81,14 @@ public class PolicyController {
         return "redirect:/policy/policyLoading?hash=" + hash;
     }
 
-//     *  AI 로딩 페이지
+    //     *  AI 로딩 페이지
     @GetMapping("/policyLoading")
     public String policyLoadingPage(@RequestParam String hash, Model model) {
         model.addAttribute("hash", hash);
         return "policy/policyLoading";
     }
 
-//     *  AI 추천 실행 (비동기)
+    //     *  AI 추천 실행 (비동기)
     @GetMapping("/recommendAi")
     @ResponseBody
     public ResponseEntity<?> policyRecommendAi(@RequestParam String hash,Principal principal) {
@@ -119,19 +96,25 @@ public class PolicyController {
         if (principal == null) {
             return ResponseEntity.notFound().build();
         }
-        policyRecommendService.processRecommendation(hash,principal.getName());
+        Boolean findPolicies = policyRecommendService.processRecommendation(hash,principal.getName());
+        if (!findPolicies) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok().build();
     }
 
-//     *  추천 정책 목록 페이지
+    //     *  추천 정책 목록 페이지
     @GetMapping("/policyRecommendList")
     public String policyRecommendListPage(@RequestParam String hash,Model model) {
         List<PolicyRecommendListDTO> recommendList = policyService.findRecommendPolicyList(hash);
+        PolicyConditionVO condition = policyService.findRecommendPolicyByHash(hash);
+        condition.setRegion(Region.getNameByCode(condition.getRegion()));
+        model.addAttribute("condition",condition);
         model.addAttribute("recommendList", recommendList);
         return "policy/policyRecommendList";
     }
 
-//     *  HASH 생성 메서드
+    //     *  HASH 생성 메서드
     public String makeHash(PolicyConditionVO vo) {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -149,19 +132,4 @@ public class PolicyController {
             throw new RuntimeException(e);
         }
     }
-=======
-    @GetMapping("recommend")
-    public String policyRecommendPage(Model model, Authentication user, RedirectAttributes redirectAttributes){
-
-        if(memberService.checkMemberPlus(user.getName()).getAge()==null){
-            redirectAttributes.addAttribute("name", memberService.checkMemberPlus(user.getName()).getName());
-            return "redirect:/member/memberPlus";
-        }
-
-        log.info("---------USER  {}", user.getName() );
-        return "policy/recommendedList";
-    }
-
-
->>>>>>> develop
 }

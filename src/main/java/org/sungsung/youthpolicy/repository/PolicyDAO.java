@@ -33,39 +33,39 @@ public class PolicyDAO {
         policyMapper.insertToEligibility(policyEligibilityVO);
     }
 
-//    정책 목록
+    //    정책 목록
     public List<PolicyListResponseDTO> selectAllPolicy(PolicyListRequestDTO policyListRequestDTO){
         return policyMapper.selectPolicyList(policyListRequestDTO);
     }
-//    정책 상세
+    //    정책 상세
     public PolicyDetailDTO selectPolicyDetailById(String policyId){
         return policyMapper.selectPolicyDetailById(policyId);
     }
-//    정책 개수
+    //    정책 개수
     public Integer selectPolicyCount(PolicyListRequestDTO policyListRequestDTO){
         return policyMapper.selectPolicyCount(policyListRequestDTO);
     }
-//    정책 조건 넣기
+    //    정책 조건 넣기
     public void insertPolicyCondition(PolicyConditionVO policyConditionVO){
         policyMapper.insertPolicyCondition(policyConditionVO);
     }
-//    정책 조건 중복체크
+    //    정책 조건 중복체크
     public PolicyConditionVO selectPolicyRecommendByHsh(String hash){
         return policyMapper.selectPolicyConditionByHash(hash);
     }
-//    정책 필터링 목록
+    //    정책 필터링 목록
     public List<String> selectFilterPolicyId(PolicyConditionVO policyConditionVO){
         return policyMapper.selectFilterPolicyIds(policyConditionVO);
     }
     //    필터링된 정책의 아이디로 정책목록 가져오기
-    public List<PolicyDTO> selectPolicyListByFilteringId(List<String> policyIds){
-        return policyMapper.selectPolicyListByFilteringId(policyIds);
+    public PolicyDTO selectPolicyListByFilteringId(String policyId){
+        return policyMapper.selectPolicyListByFilteringId(policyId);
     }
-//    AI 추천 정책 삽입
+    //    AI 추천 정책 삽입
     public void insertRecommendPolicy(PolicyRecommendVO policyRecommendVO){
         policyMapper.insertRecommendPolicy(policyRecommendVO);
     }
-//    AI 추천 정책 목록 조회
+    //    AI 추천 정책 목록 조회
     public List<PolicyRecommendListDTO> selectRecommendPolicyList(String hash){
         return policyMapper.selectRecommendPolicyList(hash);
     }
