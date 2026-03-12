@@ -3,6 +3,8 @@ package org.sungsung.youthpolicy.service.api.ai;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.sungsung.youthpolicy.domain.dto.api.ChatRequest;
@@ -10,6 +12,7 @@ import org.sungsung.youthpolicy.domain.dto.api.ChatResponse;
 import org.sungsung.youthpolicy.domain.dto.api.RecommendWrapper;
 import org.sungsung.youthpolicy.domain.vo.policy.PolicyRecommendVO;
 import org.sungsung.youthpolicy.domain.dto.policy.publicData.PolicyDTO;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -65,16 +68,26 @@ public class OpenAiService {
         ChatRequest request = new ChatRequest("gpt-5-mini", List.of(new ChatRequest.Message("user", prompt)));
 
         // ---------- WebClient 호출 ----------
-        String aiResultJson=  openAiWebClient.post()
-                .uri("/v1/chat/completions")
-                .bodyValue(request)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block(); // 동기 처리
+        String aiResultJson;
+        try {
 
+             aiResultJson=  openAiWebClient.post()
+                    .uri("/v1/chat/completions")
+                    .bodyValue(request)
+                    .retrieve()
+                    .onStatus(HttpStatusCode::is4xxClientError,response->{
+                        if (response.statusCode() == HttpStatus.UNAUTHORIZED){
+                            return Mono.error(new RuntimeException("AI api Key 만료"));
+                        }
+                        return  Mono.error(new RuntimeException("AI 호출 오류"));
+                    })
+                    .bodyToMono(String.class)
+                    .block(); // 동기 처리
+        }catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
 
         ChatResponse aiResponse;
-
         try {
             aiResponse = objectMapper.readValue(aiResultJson, ChatResponse.class);
 
