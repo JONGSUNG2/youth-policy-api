@@ -143,7 +143,7 @@
 
     <!--    HASH값에 맞는 조건 조회-->
     <select id="selectPolicyConditionByHash">
-        SELECT LOGIN_ID,AGE,REGION,MAIN_CATEGORY,CONDITION_HASH FROM TBL_POLICY_CONDITION WHERE CONDITION_HASH = #{hash}
+        SELECT ID,LOGIN_ID,AGE,REGION,MAIN_CATEGORY,CONDITION_HASH FROM TBL_POLICY_CONDITION WHERE CONDITION_HASH = #{hash}
     </select>
 
     <!--      조건에 맞게 필터링한 정책 아이디 조회-->
@@ -165,14 +165,16 @@
     </select>
     <!--    AI 추천 정책 삽입-->
     <insert id="insertRecommendPolicy" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO TBL_POLICY_RECOMMEND (LOGIN_ID,CONDITION_HASH,POLICY_ID,POLICY_NAME,REGION,REASON,EFFECT )
-        VALUES(#{loginId},#{conditionHash},#{policyId},#{policyName},#{region},#{reason},#{effect})
+        INSERT INTO TBL_POLICY_RECOMMEND (LOGIN_ID,POLICY_ID,REASON,EFFECT,POLICY_CONDITION_ID )
+        VALUES(#{loginId},#{policyId},#{reason},#{effect},#{policyConditionId})
 
     </insert>
     <!--    AI 추천 정책목록 조회-->
     <select id="selectRecommendPolicyList">
-        SELECT TPR.POLICY_ID, TPC.AGE,TPC.MAIN_CATEGORY,TPR.LOGIN_ID,TPR.POLICY_NAME,TPR.REGION,TPR.REASON,TPR.EFFECT
-        FROM TBL_POLICY_RECOMMEND TPR INNER JOIN TBL_POLICY_CONDITION TPC ON TPR.CONDITION_HASH = TPC.CONDITION_HASH
-        WHERE TPR.CONDITION_HASH = #{hash}
+        SELECT TPR.POLICY_ID,TPR.LOGIN_ID, TPC.AGE,TPC.MAIN_CATEGORY,TPM.POLICY_NAME,TPC.REGION,TPR.REASON,TPR.EFFECT
+        FROM TBL_POLICY_CONDITION TPC
+            INNER JOIN TBL_POLICY_RECOMMEND TPR ON TPC.ID = TPR.POLICY_CONDITION_ID
+                INNER JOIN TBL_POLICY_MASTER TPM ON TPM.POLICY_ID = TPR.POLICY_ID
+        WHERE TPC.CONDITION_HASH = #{conditionHash}
     </select>
 </mapper>

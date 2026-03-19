@@ -23,7 +23,7 @@ public class PolicyRecommendService {
 
         // 1. 조건 조회
         PolicyConditionVO condition = policyService.findRecommendPolicyByHash(hash);
-
+        log.info(condition.toString());
         // 2. 필터링된 정책 ID 리스트 조회
         List<String> policyIds = policyService.findFilteringPolicyIds(condition);
         if (policyIds.isEmpty()) {
@@ -42,7 +42,7 @@ public class PolicyRecommendService {
         // 5. DB에 추천 결과 저장
         for (PolicyRecommendVO recommendPolicy : recommendList) {
             recommendPolicy.setLoginId(memberLoginId);
-            recommendPolicy.setConditionHash(hash);
+            recommendPolicy.setPolicyConditionId(condition.getId());
             policyService.writeRecommendPolicy(recommendPolicy);
         }
         return true;

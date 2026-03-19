@@ -97,5 +97,4 @@ public class PolicyServiceImpl implements PolicyService {
         return policyDAO.selectRecommendPolicyList(hash);
     }
 
-
 }
