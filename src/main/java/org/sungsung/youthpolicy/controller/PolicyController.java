@@ -109,6 +109,7 @@ public class PolicyController {
         List<PolicyRecommendListDTO> recommendList = policyService.findRecommendPolicyList(hash);
         PolicyConditionVO condition = policyService.findRecommendPolicyByHash(hash);
         condition.setRegion(Region.getNameByCode(condition.getRegion()));
+//        지역 수정 필요
         model.addAttribute("condition",condition);
         model.addAttribute("recommendList", recommendList);
         return "policy/policyRecommendList";
