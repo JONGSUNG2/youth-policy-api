@@ -177,4 +177,8 @@
                 INNER JOIN TBL_POLICY_MASTER TPM ON TPM.POLICY_ID = TPR.POLICY_ID
         WHERE TPC.CONDITION_HASH = #{conditionHash}
     </select>
+    <!--    AI 추천 조건 목록 조회-->
+    <select id="selectPolicyConditionByLoginId">
+        SELECT * FROM TBL_POLICY_CONDITION WHERE LOGIN_ID = #{loginId}
+    </select>
 </mapper>

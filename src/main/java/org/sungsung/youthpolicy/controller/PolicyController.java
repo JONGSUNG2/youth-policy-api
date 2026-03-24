@@ -109,12 +109,25 @@ public class PolicyController {
         List<PolicyRecommendListDTO> recommendList = policyService.findRecommendPolicyList(hash);
         PolicyConditionVO condition = policyService.findRecommendPolicyByHash(hash);
         condition.setRegion(Region.getNameByCode(condition.getRegion()));
-//        지역 수정 필요
+
+//        지역 코드 -> 지역명 변환
+        for (PolicyRecommendListDTO recommendListDTO : recommendList) {
+            recommendListDTO.setRegion(Region.getNameByCode(recommendListDTO.getRegion()));
+        }
         model.addAttribute("condition",condition);
         model.addAttribute("recommendList", recommendList);
         return "policy/policyRecommendList";
     }
-
+    @GetMapping("/policyRecommendConditionList")
+    public String recommendConditionListPage(Principal principal, Model model) {
+        List<PolicyConditionVO> conditionList = policyService.findRecommendConditionList(principal.getName());
+//        지역 코드-> 지역명 변환
+        for (PolicyConditionVO conditionVO : conditionList) {
+            conditionVO.setRegion(Region.getNameByCode(conditionVO.getRegion()));
+        }
+        model.addAttribute("conditionList", conditionList);
+        return"policy/policyRecommendConditionList";
+    }
     //     *  HASH 생성 메서드
     public String makeHash(PolicyConditionVO vo) {
         ObjectMapper mapper = new ObjectMapper();

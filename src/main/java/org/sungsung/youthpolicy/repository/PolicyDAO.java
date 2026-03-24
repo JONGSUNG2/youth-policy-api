@@ -69,5 +69,9 @@ public class PolicyDAO {
     public List<PolicyRecommendListDTO> selectRecommendPolicyList(String hash){
         return policyMapper.selectRecommendPolicyList(hash);
     }
+    //    AI 추천 정책 조건 목록 조회
+    public List<PolicyConditionVO> selectPolicyConditionByLoginId(String loginId){
+        return policyMapper.selectPolicyConditionByLoginId(loginId);
+    }
 
 }

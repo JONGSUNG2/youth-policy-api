@@ -57,7 +57,46 @@
         nav ul li a:hover {
             color: #2d68ff;
         }
+        /* ===== DROPDOWN MENU ===== */
+        /* 드롭다운 기본 숨김 */
+        .dropdown {
+            position: relative;
+        }
 
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            padding: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            min-width: 180px;
+        }
+
+        /* 메뉴 항목 */
+        .dropdown-menu li {
+            list-style: none;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 15px;
+            white-space: nowrap;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .dropdown-menu li a:hover {
+            background: #f0f3ff;
+            color: #2d68ff;
+        }
+
+        /* hover 유지 */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
         /* 메인 */
         .main {
             max-width: 900px;
@@ -149,7 +188,15 @@
             <ul>
                 <li><a th:href="@{/policy/policyList}">정책 목록</a></li>
 
-                <li sec:authorize="isAuthenticated()"><a href="/">AI 맞춤혜택</a></li>
+                <li sec:authorize="isAuthenticated()" class="dropdown">
+                    <a>AI 맞춤혜택</a>
+
+                    <!-- 드롭다운 -->
+                    <ul class="dropdown-menu">
+                        <li><a href="/policy/condition">AI 맞춤혜택 받기</a></li>
+                        <li><a href="/policy/policyRecommendConditionList">AI 추천 정책 목록</a></li>
+                    </ul>
+                </li>
                 <li sec:authorize="isAuthenticated()"><a th:href="@{/member/detail}">마이페이지</a></li>
                 <li sec:authorize="isAuthenticated()"><a th:href="@{/member/logout}">로그아웃</a></li>
 

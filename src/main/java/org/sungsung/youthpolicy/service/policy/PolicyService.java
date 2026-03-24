@@ -29,4 +29,6 @@ public interface PolicyService {
     public void writeRecommendPolicy(PolicyRecommendVO policyRecommendVO);
     //    AI 추천 정책목록 조회
     public List<PolicyRecommendListDTO> findRecommendPolicyList(String hash);
+    //    AI 추천 조건 목록 조회
+    public List<PolicyConditionVO> findRecommendConditionList(String loginId);
 }

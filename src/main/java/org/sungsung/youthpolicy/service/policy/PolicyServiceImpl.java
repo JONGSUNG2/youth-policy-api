@@ -97,4 +97,9 @@ public class PolicyServiceImpl implements PolicyService {
         return policyDAO.selectRecommendPolicyList(hash);
     }
 
+    @Override
+    public List<PolicyConditionVO> findRecommendConditionList(String loginId) {
+        return policyDAO.selectPolicyConditionByLoginId(loginId);
+    }
+
 }
