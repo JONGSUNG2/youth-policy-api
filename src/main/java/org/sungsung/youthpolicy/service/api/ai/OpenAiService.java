@@ -22,7 +22,7 @@ public class OpenAiService {
     private final WebClient openAiWebClient;
     private final ObjectMapper objectMapper;
 
-    public List<PolicyRecommendVO> recommendPolicyByAi(List<PolicyDTO> filteredPolicies,String memberLoginId) {
+    public List<PolicyRecommendVO> recommendPolicyByAi(List<PolicyDTO> filteredPolicies,String customCondition,String memberLoginId) {
 
         String jsonPolicies = "";
         try {
@@ -32,25 +32,37 @@ public class OpenAiService {
         }
 
         String prompt = """
-        아래는 이미 사용자 조건으로 필터링된 정책 리스트입니다.
-        이 정책들(JSON)만 분석해서 적합한 정책을 추천하세요.
-
+        아래는 이미 사용자 조건으로 필터링된 정책 리스트(JSON)입니다.
+        이 정책들만 분석하여 사용자에게 가장 적합한 정책을 추천하세요.
+        
         정책 목록(JSON):
         %s
+        
         로그인 아이디:
         %s
+        
+        사용자입력 세부조건:
+        %s
+        
         요구 사항:
-        1. JSON에 포함된 정책을 모두 추천하세요.
-        2. 각 정책에 대해:
+        1. JSON에 포함된 정책만 추천하세요. 임의 정책 추가 금지.
+        2. 각 정책에 대해 아래 항목을 반드시 포함하세요:
            - policyId
            - policyName
            - region
-           - 추천 이유
-           - 기대 효과
-        3. 추천이유와 기대효과를 내가 입력한 조건에 맞게 설명하세요.
-        4. 사용자의 로그인 아이디를 사용하여 '로그인 아이디'님 에게 추천하는 이유는 ~때문입니다. 의 형식으로 설명하시오
-        반드시 아래 JSON 형식으로만 응답하세요:
-
+           - reason
+           - effect
+        
+        3. reason과 effect 생성 규칙:
+           - 반드시 **완전한 문장 단위**로 작성할 것
+           - 각 문장은 마침표로 끝낼 것
+           - 문장 사이에는 공백을 1칸 이상 넣을 것
+           - 필요한 경우 **줄바꿈(\n)** 을 사용해도 됨
+           - 최소 2문장 이상 작성
+           - 사용자 입력 세부조건(%s)을 최우선 반영하여 구체적으로 설명할 것
+           - "로그인 아이디님께 추천하는 이유는 ~ 때문입니다." 형식을 포함할 것
+        
+        4. 전체 응답은 반드시 아래 JSON 형식만 사용:
         {
           "recommendList": [
             {
@@ -62,9 +74,9 @@ public class OpenAiService {
             }
           ]
         }
-
-        예외 문장, 설명, 불필요 텍스트 절대 포함하지 마세요.
-        """.formatted(jsonPolicies,memberLoginId);
+        
+        5. JSON 외의 다른 설명, 텍스트, 예시, 문장 출력 금지."""
+                .formatted(jsonPolicies, memberLoginId, customCondition, customCondition);
         ChatRequest request = new ChatRequest("gpt-5-mini", List.of(new ChatRequest.Message("user", prompt)));
 
         // ---------- WebClient 호출 ----------

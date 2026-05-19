@@ -73,7 +73,6 @@ public class PolicyController {
         if (policyService.findRecommendPolicyByHash(hash) != null) {
             return "redirect:/policy/policyRecommendList?hash=" + hash;
         }
-
         policyConditionVO.setLoginId(principal.getName());
         policyConditionVO.setConditionHash(hash);
         policyService.writePolicyCondition(policyConditionVO);

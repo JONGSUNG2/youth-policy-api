@@ -56,8 +56,8 @@
         nav ul li a:hover {
             color: #2d68ff;
         }
-        /* ===== DROPDOWN MENU ===== */
-        /* 드롭다운 기본 숨김 */
+
+        /* ===== DROPDOWN ===== */
         .dropdown {
             position: relative;
         }
@@ -74,15 +74,9 @@
             min-width: 180px;
         }
 
-        /* 메뉴 항목 */
-        .dropdown-menu li {
-            list-style: none;
-        }
-
         .dropdown-menu li a {
             display: block;
             padding: 10px 15px;
-            white-space: nowrap;
             color: #333;
             text-decoration: none;
         }
@@ -92,10 +86,10 @@
             color: #2d68ff;
         }
 
-        /* hover 유지 */
         .dropdown:hover .dropdown-menu {
             display: block;
         }
+
         /* ===== HERO ===== */
         .hero {
             background: linear-gradient(135deg, #2d68ff, #5d8aff);
@@ -114,7 +108,7 @@
             opacity: 0.9;
         }
 
-        /* ===== MAIN SECTION ===== */
+        /* ===== MAIN ===== */
         .main-section {
             max-width: 900px;
             margin: 50px auto;
@@ -185,27 +179,25 @@
             text-decoration: underline;
         }
 
-        .policy-desc {
-            margin-top: 10px;
-            font-size: 15px;
+        /* ===== 추천 이유 / 기대 효과 공통 스타일 ===== */
+        .policy-info-box {
+            margin-top: 18px;
+            background: #f8faff;
+            padding: 14px 16px;
+            border-radius: 10px;
+        }
+
+        .policy-info-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2d68ff;
+            margin-bottom: 6px;
+        }
+
+        .policy-info-text {
+            font-size: 14px;
             color: #555;
             line-height: 1.5;
-        }
-
-        .policy-meta {
-            margin-top: 14px;
-            background: #f8faff;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .effect {
-            margin-top: 12px;
-            color: #2d68ff;
-            font-weight: 600;
-            font-size: 15px;
         }
 
         /* ===== FOOTER ===== */
@@ -231,15 +223,15 @@
         <nav>
             <ul>
                 <li sec:authorize="isAuthenticated()"><a href="/">홈</a></li>
+
                 <li sec:authorize="isAuthenticated()" class="dropdown">
                     <a href="/">AI 맞춤혜택</a>
-
-                    <!-- 드롭다운 -->
                     <ul class="dropdown-menu">
                         <li><a href="/policy/condition">AI 맞춤혜택 받기</a></li>
                         <li><a href="/policy/policyRecommendConditionList">AI 추천 정책 목록</a></li>
                     </ul>
                 </li>
+
                 <li sec:authorize="isAuthenticated()"><a th:href="@{/member/detail}">마이페이지</a></li>
                 <li sec:authorize="isAuthenticated()"><a th:href="@{/member/logout}">로그아웃</a></li>
             </ul>
@@ -266,10 +258,11 @@
             <span th:text="'나이 : ' + ${condition.age} + '세'"></span>
             <span th:text="'지역 : ' + ${condition.region}"></span>
             <span th:text="'분야 : ' + ${condition.mainCategory}"></span>
+            <span th:text="'사용자 입력 조건 : ' + ${condition.customCondition}"></span>
         </div>
     </div>
 
-    <!-- 추천 정책 카드 -->
+    <!-- 정책 카드 리스트 -->
     <div th:each="recommendPolicy : ${recommendList}" class="policy-card">
 
         <div class="policy-title">
@@ -278,15 +271,18 @@
             </a>
         </div>
 
-        <div class="policy-desc" th:text="${recommendPolicy.reason}"></div>
-
-        <div class="policy-meta">
-            <p th:text="'대분류: ' + ${recommendPolicy.mainCategory}"></p>
-            <p th:text="'지역: ' + ${recommendPolicy.region}"></p>
-            <p th:text="'나이: ' + ${recommendPolicy.age}"></p>
+        <!-- 추천 이유 -->
+        <div class="policy-info-box">
+            <div class="policy-info-label">📌 추천 이유</div>
+            <div class="policy-info-text" th:text="${recommendPolicy.reason}"></div>
         </div>
 
-        <div class="effect" th:text="'기대효과: ' + ${recommendPolicy.effect}"></div>
+        <!-- 기대 효과 -->
+        <div class="policy-info-box">
+            <div class="policy-info-label">✨ 기대 효과</div>
+            <div class="policy-info-text" th:text="${recommendPolicy.effect}"></div>
+        </div>
+
     </div>
 
 </div>

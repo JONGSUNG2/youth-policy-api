@@ -34,7 +34,7 @@ public class PublicDataService {
         String url2 = "https://www.youthcenter.go.kr/go/ythip/getPlcy"
                 +"?apiKeyNm=33142eb1-009c-4456-bb7d-c7887f95bca8"
                 +"&pageNum=1"
-                +"&pageSize=40"
+                +"&pageSize=300"
                 +"&returnType=JSON";
 
         RestTemplate restTemplate = new RestTemplate();

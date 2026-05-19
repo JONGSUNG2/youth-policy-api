@@ -74,7 +74,7 @@
 
         if(response.ok){
             window.location.href = `/policy/policyRecommendList?hash=${hash}`;
-        }else if (response.status===404){
+        }else{
             alert('분석된 정책이 없습니다.')
             window.location.href=`/policy/condition`;
         }

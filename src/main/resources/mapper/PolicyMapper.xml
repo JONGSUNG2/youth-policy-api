@@ -137,13 +137,13 @@
 
     <!--    필터링 조건 삽입 IN TBL_POLICY_CONDITION-->
     <insert id="insertPolicyCondition" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO TBL_POLICY_CONDITION(LOGIN_ID, AGE, REGION, MAIN_CATEGORY, CONDITION_HASH)
-        VALUES ( #{loginId},#{age},#{region},#{mainCategory},#{conditionHash} )
+        INSERT INTO TBL_POLICY_CONDITION(LOGIN_ID, AGE, REGION, MAIN_CATEGORY, CONDITION_HASH,CUSTOM_CONDITION)
+        VALUES ( #{loginId},#{age},#{region},#{mainCategory},#{conditionHash},#{customCondition} )
     </insert>
 
     <!--    HASH값에 맞는 조건 조회-->
     <select id="selectPolicyConditionByHash">
-        SELECT ID,LOGIN_ID,AGE,REGION,MAIN_CATEGORY,CONDITION_HASH FROM TBL_POLICY_CONDITION WHERE CONDITION_HASH = #{hash}
+        SELECT ID,LOGIN_ID,AGE,REGION,MAIN_CATEGORY,CUSTOM_CONDITION,CONDITION_HASH FROM TBL_POLICY_CONDITION WHERE CONDITION_HASH = #{hash}
     </select>
 
     <!--      조건에 맞게 필터링한 정책 아이디 조회-->

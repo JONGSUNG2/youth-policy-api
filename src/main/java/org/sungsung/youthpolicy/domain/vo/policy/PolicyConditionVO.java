@@ -14,12 +14,12 @@ public class PolicyConditionVO {
     private String region;
     private String mainCategory;
     private String conditionHash;
-    private String createDate;
+    private LocalDateTime createDate;
+    private String customCondition;
 
 
     public String formatCreateDate(){
-        LocalDateTime now = LocalDateTime.now();
-        return now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        LocalDateTime createDate = this.createDate;
+        return createDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
-
 }

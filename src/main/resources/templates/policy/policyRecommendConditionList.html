@@ -80,10 +80,11 @@
         .dropdown-menu li a {
             display: block;
             padding: 10px 16px;
+            text-decoration: none;
+            color: #333;
         }
 
-
-        /* ⭐ ===== HERO (새로 추가) ===== */
+        /* ===== HERO ===== */
         .hero {
             background: linear-gradient(135deg, #2d68ff, #5d8aff);
             color: white;
@@ -102,7 +103,7 @@
             opacity: 0.9;
         }
 
-        /* ===== CARD LIST ===== */
+        /* ===== CONDITION LIST ===== */
         .condition-container {
             max-width: 800px;
             margin: 40px auto 80px;
@@ -125,6 +126,69 @@
             box-shadow: 0 6px 14px rgba(0,0,0,0.08);
         }
 
+        /* ===== 빈 목록 스타일 ===== */
+        .empty-box {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 40px 30px;
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #e6e9f0;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .empty-box h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2d68ff;
+            margin-bottom: 10px;
+        }
+
+        .empty-box p {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .empty-box a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 18px;
+            background: #2d68ff;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .empty-box a:hover {
+            background: #2557d6;
+        }
+
+        /* ===== 공통 라벨 스타일 ===== */
+        .info-box {
+            margin-top: 14px;
+            background: #f8faff;
+            padding: 12px 15px;
+            border-radius: 10px;
+        }
+
+        .info-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2d68ff;
+            margin-bottom: 5px;
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        /* 나이 + 날짜 */
         .condition-top {
             display: flex;
             justify-content: space-between;
@@ -142,15 +206,10 @@
             color: #777;
         }
 
-        .condition-region {
-            margin-top: 6px;
-            font-size: 15px;
-            color: #444;
-        }
-
+        /* 버튼 */
         .view-btn {
             display: inline-block;
-            margin-top: 12px;
+            margin-top: 16px;
             padding: 10px 18px;
             background: #2d68ff;
             color: white;
@@ -205,16 +264,23 @@
     </div>
 </header>
 
-
-<!-- ⭐ HERO 배너 추가 -->
+<!-- HERO -->
 <section class="hero">
-    <h1>내 추천 조건 목록</h1>
-    <p>AI가 분석한 나의 추천 조건을 한눈에 확인해보세요</p>
+    <h1>나의 AI 추천 조건 목록</h1>
+    <p>AI가 분석한 나의 추천 목록들을 조건에 따라 한눈에 확인해보세요</p>
 </section>
 
+<!-- 빈 목록일 경우 -->
+<div class="condition-container" th:if="${conditionList.isEmpty()}">
+    <div class="empty-box">
+        <h3>조건 목록이 없습니다.</h3>
+        <p>아직 저장된 추천 조건이 없어요.<br>AI 맞춤 혜택을 먼저 받아보세요!</p>
+        <a href="/policy/condition">AI 추천 받기</a>
+    </div>
+</div>
 
-<!-- CONTENT -->
-<div class="condition-container">
+<!-- 값 있을 때 -->
+<div class="condition-container" th:if="${!conditionList.isEmpty()}">
 
     <div class="condition-card" th:each="condition : ${conditionList}">
         <div class="condition-top">
@@ -222,9 +288,25 @@
             <div class="condition-date" th:text="${condition.formatCreateDate()}"></div>
         </div>
 
-        <div class="condition-region" th:text="'지역: ' + ${condition.region}"></div>
-        <div class="condition-region" th:text="'대분류: ' + ${condition.mainCategory}"></div>
+        <!-- 지역 -->
+        <div class="info-box">
+            <div class="info-label">📍 지역</div>
+            <div class="info-text" th:text="${condition.region}"></div>
+        </div>
 
+        <!-- 대분류 -->
+        <div class="info-box">
+            <div class="info-label">📌 대분류</div>
+            <div class="info-text" th:text="${condition.mainCategory}"></div>
+        </div>
+
+        <!-- 사용자 입력 조건 -->
+        <div class="info-box">
+            <div class="info-label">✏ 사용자 입력 조건</div>
+            <div class="info-text" th:text="${condition.customCondition}"></div>
+        </div>
+
+        <!-- 버튼 -->
         <a th:href="@{/policy/policyRecommendList(hash=${condition.conditionHash})}" class="view-btn">
             추천 결과 보기
         </a>
