@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.sungsung.youthpolicy.domain.dto.member.MemberDetailDTO;
 import org.sungsung.youthpolicy.domain.vo.member.MemberVO;
 import org.sungsung.youthpolicy.service.member.MemberService;
+import org.sungsung.youthpolicy.validation.member.MemberJoinValidator;
 
 import java.security.Principal;
 
@@ -22,16 +25,21 @@ import java.security.Principal;
 @Slf4j
 public class MemberController {
     private final MemberService memberService;
+    private final MemberJoinValidator memberJoinValidator;
 
     @GetMapping("/join")
-    public String join() {
-        log.info("join");
+    public String join(Model model, Principal principal) {
+        model.addAttribute("member", new MemberVO());
         return "member/join";
     }
 
     @PostMapping("/join")
-    public String join(@ModelAttribute MemberVO memberVO, Model model){
+    public String join(@Validated @ModelAttribute("member") MemberVO memberVO, BindingResult bindingResult, Model model){
 
+        memberJoinValidator.validate(memberVO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "member/join";
+        }
         memberService.insert(memberVO);
         model.addAttribute("member", memberVO);
 
