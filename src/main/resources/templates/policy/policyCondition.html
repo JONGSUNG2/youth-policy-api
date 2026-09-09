@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>AI 정책 추천 - 조건 입력</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            background: #f5f7fc;
+            color: #333;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 520px;
+            margin: 70px auto;
+            background: #ffffff;
+            padding: 40px 34px;
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: #2d68ff;
+        }
+
+        /* ===== INPUT GROUP ===== */
+        .input-box {
+            margin-bottom: 22px;
+        }
+
+        .input-label {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2d68ff;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .input-field, textarea.input-field {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d6d9e0;
+            border-radius: 10px;
+            font-size: 15px;
+            background: #f8faff;
+            transition: 0.2s;
+            resize: vertical; /* 높이 조절 허용 */
+        }
+
+        textarea.input-field {
+            min-height: 80px;
+            line-height: 1.5;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #2d68ff;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(45,104,255,0.15);
+        }
+
+        /* 안내 문구 */
+        .hint-text {
+            margin-top: 6px;
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.45;
+        }
+
+        /* ===== BUTTON ===== */
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 30px;
+            background: #2d68ff;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #2557d6;
+        }
+
+        /* BACK LINK */
+        .back-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back-link a {
+            color: #2d68ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>AI 정책 추천 받기</h2>
+
+    <form th:action="@{/policy/condition}" method="post" th:object="${policyConditionVO}">
+
+        <!-- 나이 -->
+        <div class="input-box">
+            <label class="input-label">나이</label>
+            <input type="number" class="input-field" name="age" min="1" th:field="*{age}" required>
+        </div>
+
+        <!-- 거주 지역 -->
+        <div class="input-box">
+            <label class="input-label">거주 지역</label>
+            <select class="input-field" th:field="*{region}">
+                <option value="">전체 지역</option>
+                <option th:each="r : ${regions}" th:value="${r.code}" th:text="${r.name}"></option>
+            </select>
+        </div>
+
+        <!-- 분야 -->
+        <div class="input-box">
+            <label class="input-label">전체 분야</label>
+            <select class="input-field" th:field="*{mainCategory}">
+                <option value="">선택하세요</option>
+                <option th:each="c : ${mainCategories}" th:value="${c.name}" th:text="${c.name}"></option>
+            </select>
+        </div>
+
+        <!-- 사용자 입력 조건 -->
+        <div class="input-box">
+            <label class="input-label">상세 조건</label>
+
+            <textarea class="input-field"
+                      th:field="*{customCondition}"
+                      placeholder="상세 조건을 입력하세요."></textarea>
+
+            <div class="hint-text">
+                상세한 정보를 입력할수록 <strong>AI가 더욱 정확하게</strong> 정책을 추천해드립니다.
+            </div>
+        </div>
+
+        <button type="submit">AI 추천 받기</button>
+    </form>
+
+    <div class="back-link">
+        <a href="/">← 메인으로 돌아가기</a>
+    </div>
+
+</div>
+
+</body>
+</html>

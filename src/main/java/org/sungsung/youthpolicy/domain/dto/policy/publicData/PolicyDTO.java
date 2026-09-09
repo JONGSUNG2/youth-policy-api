@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 public class PolicyDTO {
 
+    private String loginId;
     //    policy_master table :정책 기본 정보
     @JsonProperty("plcyNo") //정책 고유 ID
     private String policyId;

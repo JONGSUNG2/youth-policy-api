@@ -9,15 +9,15 @@
         body {
             margin: 0;
             font-family: 'Inter', Arial, sans-serif;
-            background-color: #f3f4f7;
+            background: #f7f8fa;
             color: #333;
-            line-height: 1.55;
+            line-height: 1.6;
         }
 
         /* ===== HEADER ===== */
         header {
-            background-color: white;
-            border-bottom: 1px solid #e6e9f0;
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -26,7 +26,7 @@
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 14px 20px;
+            padding: 14px 22px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -42,15 +42,15 @@
         nav ul {
             list-style: none;
             display: flex;
-            gap: 28px;
-            padding: 0;
+            gap: 26px;
             margin: 0;
+            padding: 0;
         }
 
         nav ul li a {
-            color: #333;
-            font-size: 16px;
             text-decoration: none;
+            color: #333;
+            font-size: 15px;
             font-weight: 500;
         }
 
@@ -58,59 +58,82 @@
             color: #2d68ff;
         }
 
-        /* 메인 */
+        /* Dropdown */
+        .dropdown { position: relative; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 110%;
+            left: 0;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            min-width: 160px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+        }
+
+        .dropdown:hover .dropdown-menu { display: block; }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 14px;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .dropdown-menu li a:hover {
+            background: #f3f6ff;
+            color: #2d68ff;
+        }
+
+        /* ===== MAIN ===== */
         .main {
-            max-width: 900px;
+            max-width: 840px;
             margin: 50px auto;
             padding: 0 20px;
         }
 
-        /* 제목 박스 */
+        /* 정책 제목 영역 */
         .title-box {
-            background: #ffffff;
-            padding: 32px 35px;
-            border-radius: 16px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            padding-bottom: 28px;
+            border-bottom: 2px solid #e5e7eb;
             margin-bottom: 40px;
-            border-left: 6px solid #2563eb;
         }
 
         .policy-title {
-            font-size: 30px;
+            font-size: 28px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .meta {
-            color: #666;
             font-size: 15px;
+            color: #555;
         }
 
-        /* 공통 카드 */
-        .card {
-            background: #ffffff;
-            padding: 28px 32px;
-            border-radius: 14px;
-            margin-bottom: 28px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.05);
-            border-left: 4px solid #dbeafe;
+        /* 각 섹션 스타일 */
+        .section {
+            margin-bottom: 38px;
         }
 
-        .card h3 {
+        .section h3 {
             font-size: 20px;
             font-weight: 700;
-            margin-bottom: 15px;
-            padding-left: 10px;
-            border-left: 4px solid #2563eb;
+            margin-bottom: 14px;
             color: #1f2937;
+        }
+
+        .section p, .section span, .section a {
+            font-size: 15px;
+            color: #444;
         }
 
         .keyword {
             display: inline-block;
             background: #eef2ff;
             padding: 6px 14px;
-            border-radius: 20px;
-            margin-right: 8px;
+            border-radius: 18px;
+            margin-right: 6px;
             font-size: 14px;
             color: #4338ca;
             font-weight: 500;
@@ -119,19 +142,18 @@
         a {
             color: #2563eb;
             text-decoration: none;
-            font-weight: 500;
         }
         a:hover {
             text-decoration: underline;
         }
 
-        /* footer */
         footer {
             background: white;
-            padding: 20px;
-            margin-top: 50px;
-            border-top: 1px solid #e6e9f0;
             text-align: center;
+            padding: 18px;
+            margin-top: 60px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 14px;
             color: #777;
         }
     </style>
@@ -139,17 +161,22 @@
 
 <body>
 
-<!-- HEADER -->
 <header>
     <div class="nav-container">
-
         <a href="/" class="logo">청년 정책지원</a>
 
         <nav>
             <ul>
                 <li><a th:href="@{/policy/policyList}">정책 목록</a></li>
 
-                <li sec:authorize="isAuthenticated()"><a href="/">AI 맞춤혜택</a></li>
+                <li sec:authorize="isAuthenticated()" class="dropdown">
+                    <a>AI 맞춤혜택</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/policy/condition">AI 맞춤혜택 받기</a></li>
+                        <li><a href="/policy/policyRecommendConditionList">AI 추천 정책 목록</a></li>
+                    </ul>
+                </li>
+
                 <li sec:authorize="isAuthenticated()"><a th:href="@{/member/detail}">마이페이지</a></li>
                 <li sec:authorize="isAuthenticated()"><a th:href="@{/member/logout}">로그아웃</a></li>
 
@@ -157,44 +184,42 @@
                 <li sec:authorize="!isAuthenticated()"><a th:href="@{/member/join}">회원가입</a></li>
             </ul>
         </nav>
-
     </div>
 </header>
-
 
 <!-- MAIN -->
 <div class="main">
 
-    <!-- 제목 박스 -->
+    <!-- 제목 -->
     <div class="title-box">
-        <div class="policy-title" th:text="${policy.policyName}">정책명</div>
+        <div class="policy-title" th:text="${policy.policyName}"></div>
         <div class="meta">
-            <span th:text="'대분류: ' + ${policy.mainCategory}"></span> ·
-            <span th:text="'중분류: ' + ${policy.subCategory}"></span> ·
-            <span th:text="'지역: ' + ${policy.region}"></span>
+            <span th:text="${policy.mainCategory}"></span> ·
+            <span th:text="${policy.subCategory}"></span> ·
+            <span th:text="${policy.region}"></span>
         </div>
     </div>
 
     <!-- 정책 설명 -->
-    <div class="card">
+    <div class="section">
         <h3>정책 설명</h3>
         <p th:text="${policy.description}"></p>
     </div>
 
     <!-- 키워드 -->
-    <div class="card">
+    <div class="section">
         <h3>키워드</h3>
-        <span class="keyword" th:text="${policy.keyword}">키워드</span>
+        <span class="keyword" th:text="${policy.keyword}"></span>
     </div>
 
     <!-- 담당자 -->
-    <div class="card">
+    <div class="section">
         <h3>담당 부서 / 담당자</h3>
         <p th:text="${policy.adminName}"></p>
     </div>
 
-    <!-- 지원 요약 -->
-    <div class="card">
+    <!-- 지원 정보 -->
+    <div class="section">
         <h3>지원 정보</h3>
         <p><strong>지원 요약:</strong> <span th:text="${policy.supportSummary}"></span></p>
         <p><strong>지원 규모 제한:</strong> <span th:text="${policy.supportLimitFlag}"></span></p>
@@ -202,8 +227,8 @@
         <p><strong>선착순 여부:</strong> <span th:text="${policy.firstComeFlag}"></span></p>
     </div>
 
-    <!-- 신청 -->
-    <div class="card">
+    <!-- 신청 안내 -->
+    <div class="section">
         <h3>신청 안내</h3>
         <p><strong>신청 방법 / 기간:</strong></p>
         <p th:text="${policy.applyMethod}"></p>
@@ -219,14 +244,14 @@
     </div>
 
     <!-- 참고 링크 -->
-    <div class="card">
+    <div class="section">
         <h3>참고 링크</h3>
         <p><a th:href="${policy.referenceUrl1}" th:text="${policy.referenceUrl1}" target="_blank"></a></p>
         <p><a th:href="${policy.referenceUrl2}" th:text="${policy.referenceUrl2}" target="_blank"></a></p>
     </div>
 
-    <!-- 기간 -->
-    <div class="card">
+    <!-- 사업 기간 -->
+    <div class="section">
         <h3>사업 기간</h3>
         <p><strong>시작일:</strong> <span th:text="${policy.formatStartDate()}"></span></p>
         <p><strong>종료일:</strong> <span th:text="${policy.formatEndDate()}"></span></p>
@@ -234,12 +259,15 @@
     </div>
 
     <!-- 자격 -->
-    <div class="card">
+    <div class="section">
         <h3>신청 자격</h3>
+        <p> ⚠️ 최소 나이와 최대 나이가 0일 경우 나이 제한이 없습니다. </p>
         <p><strong>최소 나이:</strong> <span th:text="${policy.minAge}"></span></p>
         <p><strong>최대 나이:</strong> <span th:text="${policy.maxAge}"></span></p>
+
         <p><strong>추가 조건:</strong></p>
         <p th:text="${policy.additionalQualification}"></p>
+
         <p><strong>참여 대상 상세:</strong></p>
         <p th:text="${policy.participantTargetText}"></p>
     </div>

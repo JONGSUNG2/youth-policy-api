@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>AI 추천 정책 목록</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: #f5f6fa;
+            color: #333;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background-color: white;
+            border-bottom: 1px solid #e6e9f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #2d68ff;
+            font-size: 22px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 28px;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li a {
+            color: #333;
+            font-size: 16px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            color: #2d68ff;
+        }
+
+        /* ===== DROPDOWN ===== */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            padding: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            min-width: 180px;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .dropdown-menu li a:hover {
+            background: #f0f3ff;
+            color: #2d68ff;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #2d68ff, #5d8aff);
+            color: white;
+            padding: 70px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 17px;
+            opacity: 0.9;
+        }
+
+        /* ===== MAIN ===== */
+        .main-section {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .main-title {
+            font-size: 26px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: #222;
+        }
+
+        /* ===== CONDITION BOX ===== */
+        .condition-box {
+            background: #ffffff;
+            padding: 20px 24px;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+
+        .condition-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d68ff;
+            margin-bottom: 10px;
+        }
+
+        .condition-items {
+            display: flex;
+            gap: 15px;
+            font-size: 15px;
+            flex-wrap: wrap;
+        }
+
+        .condition-items span {
+            background: #eef3ff;
+            padding: 8px 14px;
+            border-radius: 8px;
+            color: #2d68ff;
+            font-weight: 600;
+        }
+
+        /* ===== POLICY CARD ===== */
+        .policy-card {
+            background: #ffffff;
+            padding: 28px 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+            transition: 0.25s ease;
+        }
+
+        .policy-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+        }
+
+        .policy-title a {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2d68ff;
+            text-decoration: none;
+        }
+
+        .policy-title a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== 추천 이유 / 기대 효과 공통 스타일 ===== */
+        .policy-info-box {
+            margin-top: 18px;
+            background: #f8faff;
+            padding: 14px 16px;
+            border-radius: 10px;
+        }
+
+        .policy-info-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2d68ff;
+            margin-bottom: 6px;
+        }
+
+        .policy-info-text {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: white;
+            padding: 20px;
+            margin-top: 50px;
+            border-top: 1px solid #e6e9f0;
+            text-align: center;
+            color: #777;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="nav-container">
+        <a href="/" class="logo">청년 정책지원</a>
+
+        <nav>
+            <ul>
+                <li sec:authorize="isAuthenticated()"><a href="/">홈</a></li>
+
+                <li sec:authorize="isAuthenticated()" class="dropdown">
+                    <a href="/">AI 맞춤혜택</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/policy/condition">AI 맞춤혜택 받기</a></li>
+                        <li><a href="/policy/policyRecommendConditionList">AI 추천 정책 목록</a></li>
+                    </ul>
+                </li>
+
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/member/detail}">마이페이지</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/member/logout}">로그아웃</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <h1>AI 정책 추천 결과</h1>
+    <p>입력하신 조건을 기반으로 맞춤 정책을 분석해드렸어요</p>
+</section>
+
+<!-- MAIN -->
+<div class="main-section">
+
+    <h2 class="main-title">추천된 정책 목록</h2>
+
+    <!-- 조건 요약 -->
+    <div class="condition-box" th:if="${condition != null}">
+        <div class="condition-title">📌 추천 조건</div>
+
+        <div class="condition-items">
+            <span th:text="'나이 : ' + ${condition.age} + '세'"></span>
+            <span th:text="'지역 : ' + ${condition.region}"></span>
+            <span th:text="'분야 : ' + ${condition.mainCategory}"></span>
+            <span th:text="'사용자 입력 조건 : ' + ${condition.customCondition}"></span>
+        </div>
+    </div>
+
+    <!-- 정책 카드 리스트 -->
+    <div th:each="recommendPolicy : ${recommendList}" class="policy-card">
+
+        <div class="policy-title">
+            <a th:href="@{/policy/detail/{id}(id=${recommendPolicy.policyId})}"
+               th:text="${recommendPolicy.policyName}">
+            </a>
+        </div>
+
+        <!-- 추천 이유 -->
+        <div class="policy-info-box">
+            <div class="policy-info-label">📌 추천 이유</div>
+            <div class="policy-info-text" th:text="${recommendPolicy.reason}"></div>
+        </div>
+
+        <!-- 기대 효과 -->
+        <div class="policy-info-box">
+            <div class="policy-info-label">✨ 기대 효과</div>
+            <div class="policy-info-text" th:text="${recommendPolicy.effect}"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>© 2026 정책지원 서비스</footer>
+
+</body>
+</html>

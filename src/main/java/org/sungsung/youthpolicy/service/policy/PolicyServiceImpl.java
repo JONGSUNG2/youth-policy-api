@@ -4,14 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.sungsung.youthpolicy.converter.PolicyDataConverter;
-import org.sungsung.youthpolicy.domain.dto.member.MemberPlusDTO;
-import org.sungsung.youthpolicy.domain.dto.policy.PolicyCondition;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListRequestDTO;
+import org.sungsung.youthpolicy.domain.dto.policy.PolicyRecommendListDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.publicData.PolicyDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyDetailDTO;
 import org.sungsung.youthpolicy.domain.dto.policy.PolicyListResponseDTO;
 import org.sungsung.youthpolicy.domain.vo.policy.*;
-import org.sungsung.youthpolicy.repository.MemberDAO;
 import org.sungsung.youthpolicy.repository.PolicyDAO;
 
 import java.util.List;
@@ -22,7 +20,6 @@ public class PolicyServiceImpl implements PolicyService {
 
     private final PolicyDataConverter policyDataConverter;
     private final PolicyDAO policyDAO;
-    private final MemberDAO memberDAO;
     public static Integer PAGE_SIZE=5;
     @Override
     //    DB에 공공데이터 넣기
@@ -44,13 +41,13 @@ public class PolicyServiceImpl implements PolicyService {
     }
 
     @Override
-    public List<PolicyListResponseDTO> policyList(PolicyListRequestDTO policyListRequestDTO, PolicyCondition policyCondition) {
+    public List<PolicyListResponseDTO> policyList(PolicyListRequestDTO policyListRequestDTO) {
 
         if (policyListRequestDTO.getCurrentPage()==null){
             policyListRequestDTO.setCurrentPage(1);
         }
 
-        Integer policyCount = policyDAO.selectPolicyCount(policyCondition);
+        Integer policyCount = policyDAO.selectPolicyCount(policyListRequestDTO);
         policyListRequestDTO.setTotalPage((policyCount==0)?1:(int)Math.ceil((double)policyCount/PAGE_SIZE));
 
 
@@ -61,7 +58,7 @@ public class PolicyServiceImpl implements PolicyService {
 
         policyListRequestDTO.setPageSize(PAGE_SIZE);
         policyListRequestDTO.setStartRow((policyListRequestDTO.getCurrentPage()-1)*PAGE_SIZE);
-        return policyDAO.selectAllPolicy(policyListRequestDTO, policyCondition);
+        return policyDAO.selectAllPolicy(policyListRequestDTO);
     }
 
     @Override
@@ -69,8 +66,40 @@ public class PolicyServiceImpl implements PolicyService {
         return policyDAO.selectPolicyDetailById(policyId);
     }
 
+    @Override
+    public void writePolicyCondition(PolicyConditionVO policyConditionVO) {
+        policyDAO.insertPolicyCondition(policyConditionVO);
+    }
 
+    @Override
+    public PolicyConditionVO findRecommendPolicyByHash(String hash) {
+        return policyDAO.selectPolicyRecommendByHsh(hash);
+    }
 
+    //    필터링된 정책의 policyIds
+    @Override
+    public List<String> findFilteringPolicyIds(PolicyConditionVO policyConditionVO) {
+        return policyDAO.selectFilterPolicyId(policyConditionVO);
+    }
+
+    @Override
+    public PolicyDTO findFilteringPolicyList(String policyId) {
+        return policyDAO.selectPolicyListByFilteringId(policyId);
+    }
+
+    @Override
+    public void writeRecommendPolicy(PolicyRecommendVO policyRecommendVO) {
+        policyDAO.insertRecommendPolicy(policyRecommendVO);
+    }
+
+    @Override
+    public List<PolicyRecommendListDTO> findRecommendPolicyList(String hash) {
+        return policyDAO.selectRecommendPolicyList(hash);
+    }
+
+    @Override
+    public List<PolicyConditionVO> findRecommendConditionList(String loginId) {
+        return policyDAO.selectPolicyConditionByLoginId(loginId);
+    }
 
 }
-
